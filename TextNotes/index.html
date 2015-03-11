@@ -157,6 +157,18 @@
 							
             				});
             			}
+            			
+            			else if ( $('#booknotes').is(':visible') )
+	            		{
+		            		$("#searchbox").val("");
+		            		
+	            			$( "#booknotes" ).fadeOut( "slow", function() {
+	
+	            				$("#adddiv").fadeIn("slow");							
+	
+	            				});
+	            			}
+            			
                    		
                 });
                 $("#homebutton").click( function()
@@ -191,7 +203,7 @@
 						$("#booknotes").fadeOut( "slow", function() {
 							$("div.notes").remove();
 							$("div.notesaccordian").remove();
-							$("#searchdiv table").undelegate('tr', 'click');
+							$("#searchdiv table").undelegate();
 							$("#featurestab").fadeIn("slow");
 							$("#aboutustab").fadeIn("slow");
 							$("#contactustab").fadeIn("slow");
@@ -206,6 +218,7 @@
                  
                 //on every letter change the search function is called
                 $('#searchbox').on('input', function() {
+	                $("#searchdiv table").undelegate();
 					var searchboxValue = $("#searchbox").val();
 					
 					if ( $('#home').is(':visible') )
@@ -270,6 +283,12 @@
 							}
 						});
 						
+						$("#searchdiv table").delegate('tr', 'click', function() {
+							var isbn10Selected = $(this).attr('id');
+							makeNotesPage(isbn10Selected);
+						
+						});
+						
 						if ( $('#home').is(':visible') )
 						{
 							$("#featurestab").fadeOut("slow");
@@ -278,11 +297,7 @@
 							$("#home").fadeOut( "slow", function() {
 								$("#searchdiv").fadeIn("slow", function() {
 								
-									$("#searchdiv table").delegate('tr', 'click', function() {
-								        var isbn10Selected = $(this).attr('id');
-								        makeNotesPage(isbn10Selected);
-
-								    });
+									
 								
 	            				});
 	            			});
@@ -295,12 +310,13 @@
 							$("#adddiv").fadeOut( "slow", function() {
 								$("#searchdiv").fadeIn("slow", function() {
 									
+									/*
 									$("#searchdiv table").delegate('tr', 'click', function() {
 								        
 								        var isbn10Selected = $(this).attr('id');
 								        makeNotesPage(isbn10Selected);
 
-								    });
+							});*/
 								
 	            				});
 								
