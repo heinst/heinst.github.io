@@ -135,7 +135,8 @@
 						
 						displayNotes(obj.isbn10, obj.isbn13);
 						
-						$("#searchdiv").fadeOut("slow", function() {
+						$('#searchdiv').fadeOut("slow", function() {
+							$('div.search').fadeOut("slow");
 					        $('#booknotes').fadeIn('slow');
 	    				});	
 					}
@@ -183,9 +184,9 @@
 							$("#home").fadeIn("slow");
 							
 							
-            			});
-            		}
-            		else if ( $('#searchdiv').is(':visible') )
+            				});
+            			}
+            			else if ( $('#searchdiv').is(':visible') )
 					{
 						$("#searchdiv").fadeOut( "slow", function() {
 							$("#featurestab").fadeIn("slow");
@@ -195,24 +196,25 @@
 							$("#home").fadeIn("slow");
 							$("#searchbox").val("");
 							
-            			});
-            		}
-            		else if ( $('#booknotes').is(':visible') )
+            				});
+            			}
+            			else if ( $('#booknotes').is(':visible') )
 					{
 						
-						$("#booknotes").fadeOut( "slow", function() {
-							$("div.notes").remove();
-							$("div.notesaccordian").remove();
-							$("#searchdiv table").undelegate();
-							$("#featurestab").fadeIn("slow");
-							$("#aboutustab").fadeIn("slow");
-							$("#contactustab").fadeIn("slow");
+							$("#booknotes").fadeOut( "slow", function() {
+								$("div.notes").remove();
+								$("div.notesaccordian").remove();
+								$("#searchdiv table").undelegate();
+								$("#featurestab").fadeIn("slow");
+								$("#aboutustab").fadeIn("slow");
+								$("#contactustab").fadeIn("slow");
+								$("#searchbox").val("");
+								$('div.search').fadeIn("slow");
+								$("#home").fadeIn("slow");
+								
 							
-							$("#home").fadeIn("slow");
-							$("#searchbox").val("");
-							
-            			});
-            		}
+            					});
+            			}
                    		
                  });
                  
@@ -659,6 +661,7 @@
 					$(this).fadeOut('slow').remove();
 				});
 				$("#booknotes").fadeOut( "slow", function() {
+					$('div.search').fadeIn("slow");
 					$("#searchdiv").fadeIn("slow");
 	            });
 			}
@@ -706,6 +709,19 @@
 					return (check == str[str.length-1].toUpperCase());
 				}
 			}
+			
+			function replaceAll(str, find, replace) {
+			  var i = str.indexOf(find);
+			  if (i > -1){
+				str = str.replace(find, replace); 
+				i = i + replace.length;
+				var st2 = str.substring(i);
+				if(st2.indexOf(find) > -1){
+				  str = str.substring(0,i) + replaceAll(st2, find, replace);
+				}       
+			  }
+			  return str;
+			}
 
 			//adds textbook and calls image url, checks inputs as well
             function addTextbook()
@@ -739,9 +755,9 @@
 				else
 				{
 					
-					isbn = isbn.replace(" ", "");
+					isbn = replaceAll(isbn, " ", "");
 					
-					var checkIsbn = isbn.replace("-", "");
+					var checkIsbn = replaceAll(isbn, "-", "");
 					
 					if( (isbn == null) || !(isValidIsbn(checkIsbn)) || (isbn == ""))
 					{
@@ -754,7 +770,7 @@
 											
 						if(imgUrl == "")
 						{
-							var isbnNoDash = isbn.replace("-", "");
+							var isbnNoDash = replaceAll(isbn, "-", "");
 							if (isbnNoDash.length == 13)
 							{
 								var isbn10 = ISBN13toISBN10(isbnNoDash);
@@ -784,7 +800,6 @@
 							{
 								var isbn13 = ISBN10toISBN13(isbnNoDash);
 								var isbn13Dash = isbn13.slice(0, 3) + "-" + isbn13.slice(3);
-								alert(isbn13);
 								getImageUrl(isbn13).done(function(result) {
 									imgUrl = parseXML(result);
 									getBookData(isbn, isbn13Dash).done(function(result) {
@@ -808,7 +823,7 @@
 						}
 						else
 						{
-							var isbnNoDash = isbn.replace("-", "");
+							var isbnNoDash = replaceAll(isbn, "-", "");
 							if (isbnNoDash.length == 13)
 							{
 								
